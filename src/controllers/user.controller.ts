@@ -15,6 +15,16 @@ class UserController {
       next(error);
     }
   }
+  async auth(request: Request, response: Response, next: NextFunction) {
+    const { email, password } = request.body;
+    try {
+      const result = await this.usersUserCase.auth({ email, password });
+
+      return response.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export { UserController };
