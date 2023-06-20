@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-
 export async function connect() {
+  if (!process.env.MONGO_DB_HOST) {
+    throw new Error('.env not found');
+  }
   try {
-    await mongoose.connect(
-      'mongodb+srv://herocode:HM9CrAn423GXDNQd@cluster0.t6hmb.mongodb.net/realtime',
-    );
+    await mongoose.connect(process.env.MONGO_DB_HOST);
   } catch (error) {
     console.log('Erro ao conectar no banco de dados.', error);
   }

@@ -39,7 +39,11 @@ class Users {
       throw new Error('User or password invalid');
     }
 
-    let secretKey = '19ac12bb5b301f39e8e889f32630b971';
+    let secretKey = process.env.TOKEN_SECRET;
+    if (!process.env.TOKEN_SECRET) {
+      throw new Error('TOKEN_SECRET not found');
+    }
+
     if (!secretKey) {
       throw new Error('There is no secret Key');
     }
