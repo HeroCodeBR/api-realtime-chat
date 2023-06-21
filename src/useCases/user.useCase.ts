@@ -1,5 +1,5 @@
 import { sign } from 'jsonwebtoken';
-import { IAuth, ICreate } from '../interfaces/users.interface';
+import { IAuth, ICreate, IPagination } from '../interfaces/users.interface';
 import { UsersRepository } from '../repositories/user.repository';
 import { compare, hash } from 'bcrypt';
 import { HttpException } from '../interfaces/HttpException';
@@ -64,6 +64,19 @@ class Users {
         name: findUser.name,
       },
     };
+  }
+
+  async findAllUsers({ pageNumber, pageSize }: IPagination) {
+    const result = await this.usersRepository.findAllUsers({
+      pageNumber,
+      pageSize,
+    });
+    console.log(
+      '🚀 ~ file: user.useCase.ts:71 ~ Users ~ findAllUsers ~ result:',
+      result.length,
+    );
+
+    return result;
   }
 }
 export { Users };

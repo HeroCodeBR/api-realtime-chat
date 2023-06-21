@@ -12,3 +12,8 @@ export interface IAuth {
   email: string;
   password: string;
 }
+
+export interface IPagination {
+  pageNumber: number;
+  pageSize: number;
+}

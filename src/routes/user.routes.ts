@@ -18,7 +18,7 @@ class UserRoutes {
     this.router.get(
       '/',
       authMiddleware,
-      this.userController.get.bind(this.userController),
+      this.userController.getAllUsers.bind(this.userController),
     );
   }
 }
