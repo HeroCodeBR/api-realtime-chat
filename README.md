@@ -5,8 +5,8 @@
 [x] - O sistema deve verificar se o e-mail fornecido pelo usuário é válido e único.
 
 ## Autenticação e Login:
-[ ] - Os usuários registrados devem poder fazer login no sistema fornecendo seu e-mail e senha.
-[ ] - O sistema deve autenticar as credenciais fornecidas e conceder acesso apenas aos usuários válidos.
+[x] - Os usuários registrados devem poder fazer login no sistema fornecendo seu e-mail e senha.
+[x] - O sistema deve autenticar as credenciais fornecidas e conceder acesso apenas aos usuários válidos.
 
 ## Listagem de Pessoas:
 [ ] - O sistema deve fornecer uma lista de pessoas disponíveis para iniciar uma conversa.

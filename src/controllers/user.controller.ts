@@ -25,6 +25,9 @@ class UserController {
       next(error);
     }
   }
+  get(request: Request, response: Response, next: NextFunction) {
+    console.log(request.params);
+  }
 }
 
 export { UserController };
