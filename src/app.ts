@@ -6,11 +6,13 @@ import { connect } from './infra/database';
 import fs from 'fs';
 import dotenv from 'dotenv';
 import { errorMiddleware } from './middlewares/error.middleware';
+import { RoomsRoutes } from './routes/rooms.routes';
 class App {
   private app: Application;
   private http: http.Server;
   private io: Server;
   private userRoutes = new UserRoutes();
+  private roomsRoutes = new RoomsRoutes();
 
   constructor() {
     this.app = express();
@@ -47,6 +49,7 @@ class App {
   }
   private initializeRoutes() {
     this.app.use('/users', this.userRoutes.router);
+    this.app.use('/rooms', this.roomsRoutes.router);
   }
   private middlewaresInitalize() {
     this.app.use(express.json());

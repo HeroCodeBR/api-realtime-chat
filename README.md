@@ -23,7 +23,7 @@
 
 ## Autenticação:
 [x] - Apenas usuários registrados podem acessar o sistema.
-[ ] - As credenciais de login devem ser autenticadas antes de permitir o acesso ao sistema.
+[x] - As credenciais de login devem ser autenticadas antes de permitir o acesso ao sistema.
 
 ## Registro:
 [x] - O e-mail fornecido durante o registro deve ser válido e único para cada usuário.
