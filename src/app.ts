@@ -7,12 +7,14 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import { errorMiddleware } from './middlewares/error.middleware';
 import { RoomsRoutes } from './routes/rooms.routes';
+import { MessageRoutes } from './routes/message.routes';
 class App {
   private app: Application;
   private http: http.Server;
   private io: Server;
   private userRoutes = new UserRoutes();
   private roomsRoutes = new RoomsRoutes();
+  private messageRoutes = new MessageRoutes();
 
   constructor() {
     this.app = express();
@@ -41,11 +43,10 @@ class App {
     this.io.on('connection', (userSocket) => {
       console.log('a user connected');
       userSocket.on('join_room', (room_id) => {
-        console.log(
-          '🚀 ~ file: app.ts:46 ~ App ~ userSocket.on ~ room:',
-          room_id,
-        );
         userSocket.join(room_id);
+      });
+      userSocket.on('message', (data) => {
+        userSocket.to(data.room_id).emit('room_message', data.message);
       });
     });
   }
@@ -57,6 +58,7 @@ class App {
   private initializeRoutes() {
     this.app.use('/users', this.userRoutes.router);
     this.app.use('/rooms', this.roomsRoutes.router);
+    this.app.use('/message', this.messageRoutes.router);
   }
   private middlewaresInitalize() {
     this.app.use(express.json());
