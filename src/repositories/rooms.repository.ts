@@ -9,6 +9,14 @@ class RoomsRepository {
     });
     return result;
   }
+  async find({ user_id_joined_room, user_id_created_room }: ICreate) {
+    const result = await RoomsModel.find({
+      user_id_created_room,
+      user_id_joined_room,
+    });
+
+    return result;
+  }
 }
 
 export { RoomsRepository };

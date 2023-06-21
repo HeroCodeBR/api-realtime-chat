@@ -16,6 +16,11 @@ class RoomsRoutes {
       authMiddleware,
       this.roomsController.store.bind(this.roomsController),
     );
+    this.router.get(
+      '/:email',
+      authMiddleware,
+      this.roomsController.show.bind(this.roomsController),
+    );
   }
 }
 

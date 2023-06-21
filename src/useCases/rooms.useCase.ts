@@ -24,5 +24,22 @@ class Rooms {
     });
     return result;
   }
+
+  async find(email: string, user_id: string) {
+    const findDestinationUserId = await this.usersRepository.findUserByEmail({
+      email,
+    });
+
+    if (!findDestinationUserId) {
+      throw new HttpException(400, 'User not found');
+    }
+
+    const findRoom = await this.roomsRepository.find({
+      user_id_joined_room: findDestinationUserId.id,
+      user_id_created_room: user_id,
+    });
+
+    return findRoom;
+  }
 }
 export { Rooms };

@@ -9,8 +9,8 @@
 [x] - O sistema deve autenticar as credenciais fornecidas e conceder acesso apenas aos usuários válidos.
 
 ## Listagem de Pessoas:
-[ ] - O sistema deve fornecer uma lista de pessoas disponíveis para iniciar uma conversa.
-[ ] - A lista de pessoas não precisa de filtros adicionais.
+[x] - O sistema deve fornecer uma lista de pessoas disponíveis para iniciar uma conversa.
+[x] - A lista de pessoas não precisa de filtros adicionais.
 
 ## Iniciar Conversa:
 [ ] - Os usuários devem poder iniciar uma conversa com outra pessoa selecionada na lista.

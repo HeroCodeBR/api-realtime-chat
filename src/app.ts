@@ -40,6 +40,13 @@ class App {
   listenSocket() {
     this.io.on('connection', (userSocket) => {
       console.log('a user connected');
+      userSocket.on('join_room', (room_id) => {
+        console.log(
+          '🚀 ~ file: app.ts:46 ~ App ~ userSocket.on ~ room:',
+          room_id,
+        );
+        userSocket.join(room_id);
+      });
     });
   }
   private initializeHtml() {
