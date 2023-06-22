@@ -46,6 +46,7 @@ class App {
         userSocket.join(room_id);
       });
       userSocket.on('message', (data) => {
+        console.log('🚀 ~ file: app.ts:49 ~ App ~ userSocket.on ~ data:', data);
         userSocket.to(data.room_id).emit('room_message', data.message);
       });
     });
