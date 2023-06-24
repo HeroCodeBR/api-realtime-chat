@@ -16,6 +16,11 @@ class MessageRoutes {
       authMiddleware,
       this.messageController.store.bind(this.messageController),
     );
+    this.router.put(
+      '/',
+      authMiddleware,
+      this.messageController.updateView.bind(this.messageController),
+    );
   }
 }
 
