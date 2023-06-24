@@ -13,6 +13,7 @@ const usersSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  avatar_url: String,
 });
 
 export const UsersModel = mongoose.default.model('Users', usersSchema);

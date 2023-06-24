@@ -26,7 +26,10 @@ class Users {
     });
     return result;
   }
-  update() {}
+  async upload(filename: string, user_id: string) {
+    const result = await this.usersRepository.upload(filename, user_id);
+    return result;
+  }
 
   async auth({ email, password }: IAuth) {
     const findUser = await this.usersRepository.findUserByEmail({ email });

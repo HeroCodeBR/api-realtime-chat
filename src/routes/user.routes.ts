@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/user.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
+import { upload } from '../infra/config/multer';
 
 class UserRoutes {
   public router: Router;
@@ -19,6 +20,13 @@ class UserRoutes {
       '/',
       authMiddleware,
       this.userController.getAllUsers.bind(this.userController),
+    );
+
+    this.router.post(
+      '/upload',
+      authMiddleware,
+      upload.single('image'),
+      this.userController.upload.bind(this.userController),
     );
   }
 }

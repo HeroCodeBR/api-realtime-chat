@@ -22,6 +22,13 @@ class UsersRepository {
 
     return result;
   }
+  async upload(filename: string, user_id: string) {
+    const result = await UsersModel.updateOne(
+      { _id: user_id },
+      { avatar_url: filename },
+    );
+    return result;
+  }
 }
 
 export { UsersRepository };

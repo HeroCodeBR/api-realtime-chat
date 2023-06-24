@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Users } from '../useCases/user.useCase';
+import { HttpException } from '../interfaces/HttpException';
 
 class UserController {
   private usersUserCase: Users;
@@ -10,6 +11,20 @@ class UserController {
     const { name, email, password } = request.body;
     try {
       const result = await this.usersUserCase.create({ name, email, password });
+      return response.status(201).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async upload(request: Request, response: Response, next: NextFunction) {
+    const file = request.file;
+    const { user_id } = request;
+
+    try {
+      if (!file?.filename) {
+        throw new HttpException(400, 'Filename doenst exists');
+      }
+      const result = await this.usersUserCase.upload(file.filename, user_id);
       return response.status(201).json(result);
     } catch (error) {
       next(error);
