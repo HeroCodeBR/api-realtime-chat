@@ -41,14 +41,26 @@ class App {
     });
   }
   listenSocket() {
+    const userStatus: string[] = [];
     this.io.on('connection', (userSocket) => {
-      console.log('a user connected');
       userSocket.on('join_room', (room_id) => {
         userSocket.join(room_id);
       });
+      userSocket.on('user_connected', (user_id) => {
+        userStatus.push(user_id);
+        this.io.emit('updateUserStatus', userStatus);
+      });
+
       userSocket.on('message', (data) => {
-        console.log('🚀 ~ file: app.ts:49 ~ App ~ userSocket.on ~ data:', data);
+        console.log('🚀 ~ file: app.ts:56 ~ App ~ userSocket.on ~ data:', data);
         userSocket.to(data.room_id).emit('room_message', data.message);
+      });
+      userSocket.on('disconnect', () => {
+        const user_id = userSocket.handshake.query.user_id;
+        if (!user_id || typeof user_id !== 'string') return;
+
+        userStatus.splice(userStatus.indexOf(user_id), 1);
+        this.io.emit('updateUserStatus', userStatus);
       });
     });
   }
