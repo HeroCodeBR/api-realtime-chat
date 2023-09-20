@@ -21,6 +21,25 @@ class MessageRepository {
     });
     return result;
   }
+  async getLastMessage(room_id: string) {
+    const result = await MessageModel.find({ room_id: room_id })
+      .sort({ createdAt: -1 })
+      .limit(1);
+    return result;
+  }
+  async countUnreadmessages(
+    room_id: string,
+    user_id: string,
+    user_destinatary: string,
+  ) {
+    const result = await MessageModel.find({
+      room_id,
+      from_user_id: user_id,
+      to_user_id: user_destinatary,
+      viewed_by_the_user: false,
+    }).countDocuments();
+    return result;
+  }
   async updateMessage(room_id: string, user_id: string, to_user_id: string) {
     const result = await MessageModel.updateMany(
       {
