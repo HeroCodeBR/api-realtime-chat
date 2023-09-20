@@ -1,7 +1,6 @@
 import { Router } from 'express';
-import { UserController } from '../controllers/user.controller';
-import { authMiddleware } from '../middlewares/auth.middleware';
 import { RoomsController } from '../controllers/rooms.controller';
+import { authMiddleware } from '../middlewares/auth.middleware';
 
 class RoomsRoutes {
   public router: Router;
@@ -11,6 +10,11 @@ class RoomsRoutes {
     this.getRoutes();
   }
   getRoutes() {
+    this.router.get(
+      '/',
+      authMiddleware,
+      this.roomsController.index.bind(this.roomsController),
+    );
     this.router.post(
       '/',
       authMiddleware,

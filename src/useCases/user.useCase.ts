@@ -70,7 +70,7 @@ class Users {
         email: findUser[0].email,
         name: findUser[0].name,
         avatar_url: findUser[0].avatar_url,
-        id: findUser[0]._id,
+        _id: findUser[0]._id,
       },
     };
   }

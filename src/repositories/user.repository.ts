@@ -24,6 +24,12 @@ class UsersRepository {
     });
     return result;
   }
+  async findUserById({ id }: { id: string }) {
+    const result = await UsersModel.find({
+      _id: id,
+    });
+    return result;
+  }
   async findAllUsers({ pageNumber, pageSize }: IPagination) {
     const result = await UsersModel.find()
       .skip((pageNumber - 1) * pageSize)
