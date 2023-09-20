@@ -1,13 +1,14 @@
-import http from 'http';
-import express, { Application, NextFunction, Request, Response } from 'express';
-import { Server } from 'socket.io';
-import { UserRoutes } from './routes/user.routes';
-import { connect } from './infra/database';
-import fs from 'fs';
+import cors from 'cors';
 import dotenv from 'dotenv';
+import express, { Application } from 'express';
+import fs from 'fs';
+import http from 'http';
+import { Server } from 'socket.io';
+import { connect } from './infra/database';
 import { errorMiddleware } from './middlewares/error.middleware';
-import { RoomsRoutes } from './routes/rooms.routes';
 import { MessageRoutes } from './routes/message.routes';
+import { RoomsRoutes } from './routes/rooms.routes';
+import { UserRoutes } from './routes/user.routes';
 class App {
   private app: Application;
   private http: http.Server;
@@ -63,7 +64,9 @@ class App {
   }
   private middlewaresInitalize() {
     this.app.use(express.json());
+    this.app.use('/uploads', express.static(__dirname + '/tmp/uploads'));
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(cors());
     fs.accessSync('.env', fs.constants.F_OK);
   }
   private interceptionError() {

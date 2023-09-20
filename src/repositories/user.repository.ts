@@ -10,8 +10,18 @@ class UsersRepository {
     const result = await UsersModel.create({ name, email, password });
     return result;
   }
+  async findUserByEmailRegex({ email }: IEmailUser) {
+    const result = await UsersModel.find({
+      email: {
+        $regex: new RegExp(email, 'i'),
+      },
+    });
+    return result;
+  }
   async findUserByEmail({ email }: IEmailUser) {
-    const result = await UsersModel.findOne({ email });
+    const result = await UsersModel.find({
+      email,
+    });
     return result;
   }
   async findAllUsers({ pageNumber, pageSize }: IPagination) {

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { Users } from '../useCases/user.useCase';
 import { HttpException } from '../interfaces/HttpException';
+import { Users } from '../useCases/user.useCase';
 
 class UserController {
   private usersUserCase: Users;
@@ -32,8 +32,17 @@ class UserController {
   }
   async auth(request: Request, response: Response, next: NextFunction) {
     const { email, password } = request.body;
+    console.log(
+      '🚀 ~ file: user.controller.ts:35 ~ UserController ~ auth ~ email:',
+      email,
+      password,
+    );
     try {
       const result = await this.usersUserCase.auth({ email, password });
+      console.log(
+        '🚀 ~ file: user.controller.ts:37 ~ UserController ~ auth ~ result:',
+        result,
+      );
 
       return response.status(200).json(result);
     } catch (error) {
@@ -60,6 +69,27 @@ class UserController {
       const result = await this.usersUserCase.findAllUsers({
         pageSize: size,
         pageNumber: number,
+      });
+
+      return response.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getFilterUserByEmail(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ) {
+    const { email } = request.params;
+    console.log(
+      '🚀 ~ file: user.controller.ts:76 ~ UserController ~ email:',
+      email,
+    );
+
+    try {
+      const result = await this.usersUserCase.findUserByEmailRegex({
+        email,
       });
 
       return response.status(200).json(result);

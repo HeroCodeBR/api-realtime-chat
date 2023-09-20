@@ -1,8 +1,8 @@
+import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import { HttpException } from '../interfaces/HttpException';
 import { IAuth, ICreate, IPagination } from '../interfaces/users.interface';
 import { UsersRepository } from '../repositories/user.repository';
-import { compare, hash } from 'bcrypt';
-import { HttpException } from '../interfaces/HttpException';
 class Users {
   private usersRepository: UsersRepository;
   constructor() {
@@ -14,7 +14,11 @@ class Users {
     const findUser = await this.usersRepository.findUserByEmail({
       email,
     });
-    if (findUser) {
+    console.log(
+      '🚀 ~ file: user.useCase.ts:17 ~ Users ~ create ~ findUser:',
+      findUser,
+    );
+    if (findUser.length > 0) {
       throw new HttpException(400, 'User exists.');
     }
     const hashPassword = await hash(password, 10);
@@ -37,7 +41,7 @@ class Users {
     if (!findUser) {
       throw new HttpException(400, 'User exists.');
     }
-    const passwordMatch = await compare(password, findUser.password!);
+    const passwordMatch = await compare(password, findUser[0].password!);
 
     if (!passwordMatch) {
       throw new HttpException(400, 'User or password invalid');
@@ -53,7 +57,7 @@ class Users {
     }
 
     const token = sign(
-      { name: findUser.name!, user_id: findUser.id, email },
+      { name: findUser[0].name!, user_id: findUser[0].id, email },
       secretKey,
       {
         expiresIn: '7d',
@@ -63,8 +67,10 @@ class Users {
     return {
       token,
       user: {
-        email: findUser.email,
-        name: findUser.name,
+        email: findUser[0].email,
+        name: findUser[0].name,
+        avatar_url: findUser[0].avatar_url,
+        id: findUser[0]._id,
       },
     };
   }
@@ -78,6 +84,20 @@ class Users {
       '🚀 ~ file: user.useCase.ts:71 ~ Users ~ findAllUsers ~ result:',
       result.length,
     );
+
+    return result;
+  }
+  async findUserByEmail({ email }: { email: string }) {
+    const result = await this.usersRepository.findUserByEmail({
+      email,
+    });
+
+    return result;
+  }
+  async findUserByEmailRegex({ email }: { email: string }) {
+    const result = await this.usersRepository.findUserByEmailRegex({
+      email,
+    });
 
     return result;
   }

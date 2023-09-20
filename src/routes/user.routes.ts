@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/user.controller';
-import { authMiddleware } from '../middlewares/auth.middleware';
 import { upload } from '../infra/config/multer';
+import { authMiddleware } from '../middlewares/auth.middleware';
 
 class UserRoutes {
   public router: Router;
@@ -16,6 +16,12 @@ class UserRoutes {
       '/auth',
       this.userController.auth.bind(this.userController),
     );
+    this.router.get(
+      '/filter/:email',
+      authMiddleware,
+      this.userController.getFilterUserByEmail.bind(this.userController),
+    );
+
     this.router.get(
       '/',
       authMiddleware,
