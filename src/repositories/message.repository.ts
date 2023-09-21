@@ -28,13 +28,14 @@ class MessageRepository {
       to_user_id,
       viewed_by_the_user: false,
     });
-    return result ? result[0].toObject() : null;
+    return result && result[0] ? result[0].toObject() : null;
   }
   async getLastMessage(room_id: string): Promise<IMessage | null> {
     const result = await MessageModel.find({ room_id: room_id })
       .sort({ createdAt: -1 })
       .limit(1);
-    return result ? result[0].toObject() : null;
+
+    return result[0] ? result[0].toObject() : null;
   }
   async countUnreadmessages(
     room_id: string,

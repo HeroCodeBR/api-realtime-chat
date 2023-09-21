@@ -21,8 +21,12 @@ class RoomsRepository {
       user_id_created_room,
       user_id_joined_room,
     });
+    console.log(
+      '🚀 ~ file: rooms.repository.ts:24 ~ RoomsRepository ~ result:',
+      result,
+    );
 
-    return result ? result[0].toObject() : null;
+    return result.length > 0 ? result[0].toObject() : null;
   }
   async findAllRooms(
     user_id: string,
@@ -38,7 +42,7 @@ class RoomsRepository {
       ],
     };
     const result = await RoomsModel.find(query);
-    return result ? result.map((room) => room.toObject()) : [];
+    return result ? result.map((room) => room && room.toObject()) : [];
   }
 }
 

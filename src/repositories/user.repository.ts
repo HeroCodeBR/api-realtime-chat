@@ -23,12 +23,14 @@ class UsersRepository {
     const result = await UsersModel.find({
       email,
     });
+
     return result ? result[0].toObject() : null;
   }
   async findUserById({ id }: { id: string }): Promise<IUser | null> {
     const result = await UsersModel.find({
       _id: id,
     });
+
     return result ? result[0].toObject() : null;
   }
   async findAllUsers({ pageNumber, pageSize }: IPagination): Promise<IUser[]> {

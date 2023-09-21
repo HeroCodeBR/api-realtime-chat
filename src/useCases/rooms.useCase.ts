@@ -25,6 +25,10 @@ class Rooms {
       user_id_joined_room: findDestinationUserId._id,
       user_id_created_room: user_id,
     });
+    console.log(
+      '🚀 ~ file: rooms.useCase.ts:28 ~ Rooms ~ create ~ result:',
+      result,
+    );
     return result;
   }
 
@@ -32,6 +36,10 @@ class Rooms {
     const findDestinationUserId = await this.usersRepository.findUserByEmail({
       email,
     });
+    console.log(
+      '🚀 ~ file: rooms.useCase.ts:39 ~ Rooms ~ find ~ findDestinationUserId:',
+      findDestinationUserId,
+    );
 
     if (!findDestinationUserId) {
       throw new HttpException(400, 'User not found');
@@ -41,6 +49,10 @@ class Rooms {
       user_id_joined_room: findDestinationUserId._id,
       user_id_created_room: user_id,
     });
+    console.log(
+      '🚀 ~ file: rooms.useCase.ts:44 ~ Rooms ~ find ~ findRoom:',
+      findRoom,
+    );
 
     return findRoom;
   }
@@ -49,6 +61,10 @@ class Rooms {
       user_id,
       number,
       size,
+    );
+    console.log(
+      '🚀 ~ file: rooms.useCase.ts:53 ~ Rooms ~ getRooms ~ result:',
+      result,
     );
 
     const roomsWithDetails = await Promise.all(
@@ -59,8 +75,9 @@ class Rooms {
 
         if (otherUser) {
           const userDetails = await this.usersRepository.findUserById({
-            id: otherUser.toString(),
+            id: otherUser,
           });
+
           if (!userDetails) {
             throw new HttpException(400, 'User not found');
           }
@@ -73,8 +90,21 @@ class Rooms {
             await this.messagesRepository.countUnreadmessages(
               room._id.toString(),
               user_id,
-              otherUser.toString(),
+              otherUser,
             );
+          const data = {
+            room,
+            toUserMessage: {
+              name: userDetails?.name,
+              email: userDetails?.email,
+              avatar_url: userDetails?.avatar_url,
+              _id: userDetails._id,
+              createdAt: userDetails.createdAt,
+            },
+            lastMessage: lastMessage,
+            count: countUnreadMessages,
+          };
+
           return {
             room,
             toUserMessage: {
@@ -90,6 +120,7 @@ class Rooms {
         }
       }),
     );
+
     return roomsWithDetails;
   }
 }

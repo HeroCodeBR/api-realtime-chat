@@ -19,6 +19,10 @@ class RoomsController {
   }
   async show(request: Request, response: Response, next: NextFunction) {
     const { email } = request.params;
+    console.log(
+      '🚀 ~ file: rooms.controller.ts:22 ~ RoomsController ~ show ~ email:',
+      email,
+    );
     const { user_id } = request;
     try {
       const result = await this.roomsUseCase.find(email, user_id);
@@ -36,6 +40,7 @@ class RoomsController {
     const size = pageSize ? Number(pageSize) : DEFAULT_PAGE_SIZE;
     try {
       const result = await this.roomsUseCase.getRooms(user_id, number, size);
+
       return response.status(200).json(result);
     } catch (error) {
       next(error);
