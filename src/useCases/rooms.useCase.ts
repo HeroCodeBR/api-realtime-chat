@@ -22,7 +22,7 @@ class Rooms {
     }
 
     const result = await this.roomsRepository.create({
-      user_id_joined_room: findDestinationUserId.id,
+      user_id_joined_room: findDestinationUserId._id,
       user_id_created_room: user_id,
     });
     return result;
@@ -38,7 +38,7 @@ class Rooms {
     }
 
     const findRoom = await this.roomsRepository.find({
-      user_id_joined_room: findDestinationUserId.id,
+      user_id_joined_room: findDestinationUserId._id,
       user_id_created_room: user_id,
     });
 
@@ -61,6 +61,9 @@ class Rooms {
           const userDetails = await this.usersRepository.findUserById({
             id: otherUser.toString(),
           });
+          if (!userDetails) {
+            throw new HttpException(400, 'User not found');
+          }
 
           const lastMessage = await this.messagesRepository.getLastMessage(
             room._id.toString(),
@@ -75,13 +78,13 @@ class Rooms {
           return {
             room,
             toUserMessage: {
-              name: userDetails[0].name,
-              email: userDetails[0].email,
-              avatar_url: userDetails[0].avatar_url,
-              _id: userDetails[0]._id,
-              createdAt: userDetails[0].createdAt,
+              name: userDetails.name,
+              email: userDetails.email,
+              avatar_url: userDetails.avatar_url,
+              _id: userDetails._id,
+              createdAt: userDetails.createdAt,
             },
-            lastMessage: lastMessage[0],
+            lastMessage: lastMessage,
             count: countUnreadMessages,
           };
         }

@@ -1,24 +1,34 @@
 import mongoose from 'mongoose';
 import { RoomsModel } from '../infra/models/rooms.model';
-import { ICreate } from '../interfaces/rooms.interface';
+import { ICreate, IRoom } from '../interfaces/rooms.interface';
 
 class RoomsRepository {
-  async create({ user_id_joined_room, user_id_created_room }: ICreate) {
+  async create({
+    user_id_joined_room,
+    user_id_created_room,
+  }: ICreate): Promise<IRoom> {
     const result = await RoomsModel.create({
       user_id_joined_room,
       user_id_created_room,
     });
-    return result;
+    return result.toObject();
   }
-  async find({ user_id_joined_room, user_id_created_room }: ICreate) {
+  async find({
+    user_id_joined_room,
+    user_id_created_room,
+  }: ICreate): Promise<IRoom | null> {
     const result = await RoomsModel.find({
       user_id_created_room,
       user_id_joined_room,
     });
 
-    return result;
+    return result ? result[0].toObject() : null;
   }
-  async findAllRooms(user_id: string, number: number, size: number) {
+  async findAllRooms(
+    user_id: string,
+    number: number,
+    size: number,
+  ): Promise<IRoom[]> {
     const query = {
       $or: [
         { user_id_created_room: new mongoose.Types.ObjectId(user_id) },
@@ -28,7 +38,7 @@ class RoomsRepository {
       ],
     };
     const result = await RoomsModel.find(query);
-    return result;
+    return result ? result.map((room) => room.toObject()) : [];
   }
 }
 

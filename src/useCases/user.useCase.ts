@@ -14,11 +14,8 @@ class Users {
     const findUser = await this.usersRepository.findUserByEmail({
       email,
     });
-    console.log(
-      '🚀 ~ file: user.useCase.ts:17 ~ Users ~ create ~ findUser:',
-      findUser,
-    );
-    if (findUser.length > 0) {
+
+    if (!findUser) {
       throw new HttpException(400, 'User exists.');
     }
     const hashPassword = await hash(password, 10);
@@ -41,7 +38,7 @@ class Users {
     if (!findUser) {
       throw new HttpException(400, 'User exists.');
     }
-    const passwordMatch = await compare(password, findUser[0].password!);
+    const passwordMatch = await compare(password, findUser.password!);
 
     if (!passwordMatch) {
       throw new HttpException(400, 'User or password invalid');
@@ -57,7 +54,7 @@ class Users {
     }
 
     const token = sign(
-      { name: findUser[0].name!, user_id: findUser[0].id, email },
+      { name: findUser.name!, user_id: findUser._id, email },
       secretKey,
       {
         expiresIn: '7d',
@@ -67,10 +64,10 @@ class Users {
     return {
       token,
       user: {
-        email: findUser[0].email,
-        name: findUser[0].name,
-        avatar_url: findUser[0].avatar_url,
-        _id: findUser[0]._id,
+        email: findUser.email,
+        name: findUser.name,
+        avatar_url: findUser.avatar_url,
+        _id: findUser._id,
       },
     };
   }

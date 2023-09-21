@@ -24,7 +24,7 @@ class Message {
     }
 
     await this.messageRepository.create({
-      to_user_id: findUserByEmail.id,
+      to_user_id: findUserByEmail._id,
       from_user_id: user_id,
       bodyMessage: message_from_user,
       room_id,
@@ -45,7 +45,7 @@ class Message {
     const updateMessagesUser = this.messageRepository.updateMessage(
       room_id,
       user_id,
-      findUserByEmail.id,
+      findUserByEmail._id,
     );
 
     return updateMessagesUser;
