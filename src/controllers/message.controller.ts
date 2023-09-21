@@ -44,6 +44,30 @@ class MessageController {
       next(error);
     }
   }
+  async getHistoric(request: Request, response: Response, next: NextFunction) {
+    const { emailDestinatary } = request.params;
+    const { page } = request.query;
+    const { user_id } = request;
+    const DEFAULT_PAGE = 1;
+    const pageNumber = page ? Number(page) : DEFAULT_PAGE;
+
+    /**
+     * camelCase: emailDestinatary
+     * PascalCase: EmailDestinatary
+     * snake_case: email_destinatary
+     * kebab-case: email-destinatary
+     */
+    try {
+      const result = await this.messageUseCase.getHistoric({
+        emailDestinatary,
+        pageNumber,
+        userId: user_id,
+      });
+      return response.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export { MessageController };

@@ -1,4 +1,5 @@
 import { HttpException } from '../interfaces/HttpException';
+import { IGetHistoric } from '../interfaces/message.interface';
 import { MessageRepository } from '../repositories/message.repository';
 import { UsersRepository } from '../repositories/user.repository';
 
@@ -49,6 +50,21 @@ class Message {
     );
 
     return updateMessagesUser;
+  }
+  async getHistoric({ emailDestinatary, pageNumber, userId }: IGetHistoric) {
+    //buscar as mensagens que tem o id do usuario logado e o id do usuario que esta recebendo a mensagem
+    const findUserByEmail = await this.userRepository.findUserByEmail({
+      email: emailDestinatary,
+    });
+    if (!findUserByEmail) {
+      throw new HttpException(400, 'User not found');
+    }
+    const messages = await this.messageRepository.getHistoric({
+      userId,
+      userIdDestinatary: findUserByEmail._id,
+      pageNumber,
+    });
+    return messages;
   }
 }
 export { Message };

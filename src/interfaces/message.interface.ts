@@ -6,9 +6,14 @@ export interface IMessage {
   createdAt?: Date;
 }
 
-export interface IMessageHistoric {
-  email: string;
-  user_id: string;
+export interface IGetHistoric {
+  emailDestinatary: string;
   pageNumber: number;
-  pageSize: number;
+  userId: string;
+}
+
+export interface IGetLastMessage {
+  pageNumber: number;
+  userId: string;
+  userIdDestinatary: string;
 }
